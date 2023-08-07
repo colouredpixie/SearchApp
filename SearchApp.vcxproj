@@ -129,6 +129,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\SearchLib\SearchLib.cpp" />
     <ClCompile Include="main.cpp">
       <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stdcpp17</LanguageStandard>
     </ClCompile>
@@ -141,6 +142,13 @@
   <ItemGroup>
     <None Include="Makefile" />
     <None Include="README.md" />
+    <None Include="x64\Debug\SearchApp.exe" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="x64\Debug\SearchLib.lib" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\SearchLib\SearchLib.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -2,21 +2,14 @@
 
 Application (App) to find file on Local Host
 
-1. App has to Find file by "name"
-2. search has to be started from root "/" directory. (or Disk "C:\" on Windows 05)
+App searches file by "name" or "part of the name" user input, starting from Disk "C:\".
+Result is first match in root directory or sub-directory, which is printed as a full path.
 
-3. To make this search faster - App creates new Searching Thread for each sub-directory in root directory,
-but not mare then 8 Execution Threads.
+Logic is implemented in a separately compiled library (GCC), while main App only calls the function from it.
 
-4. Thread who will Find needed file has to print Full Path to the file and
-has to notify all the rest threads to stop searching.
+TODO:  App to creates new thread for each sub-directory in root directory, but not mare then 8 execution threads. 
+Thread that finds needed file first has to print full path to the file and notify all the rest threads to stop searching (std::condition_variable::notify_all).
 
-- Logic "to search file" has to be placed into static library.
-- Application just uses this library to find files in a fast way.
-
-- Static Library compilation has to be done separately from Application.
-- Compiler: GCC or Gre.
-
-- Use Makefile for conpilation/linking instructions.
+TODO: Test Makefile for CLI compilation and linking.
 
 (Concurrency, Makefile, GCC, Static Library)

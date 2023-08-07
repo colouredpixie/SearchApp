@@ -1,10 +1,12 @@
+// compile with: cl /EHsc SearchLib.cpp /link SearchLib.lib
+
 #include <iostream>
-#include <F:\programs\source\repos\SearchLib\SearchLib.h>
+#include "SearchLib.h"
 
 int main() {
 
-	std::string name = getName();
-    searchResult(name);
+	std::string name = SearchLib::getName();
+	SearchLib::searchResult(name);
 
 	system("pause");
 

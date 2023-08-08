@@ -21,9 +21,6 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\SearchLib\SearchLib.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Makefile" />
@@ -38,10 +35,5 @@
     <Library Include="x64\Debug\SearchLib.lib">
       <Filter>Build</Filter>
     </Library>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\SearchLib\SearchLib.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>

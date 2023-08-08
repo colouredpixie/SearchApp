@@ -7,6 +7,8 @@
 
 #include <iostream>
 #include <thread>
+#include <condition_variable>
+
 #include <filesystem>
 namespace fs = std::filesystem;
 
@@ -14,8 +16,10 @@ namespace SearchLib
 {
 
     std::string path = "C:\\";
+
     std::vector<std::thread> threads;
-    int threadCount = 0;
+    std::condition_variable condVar;
+    std::mutex condVarMutex;
     bool terminate = false;
 
 
@@ -31,29 +35,17 @@ namespace SearchLib
         return name;
     }
 
-    bool checkForOptions() {
+    char checkForOptions() {
         char option;
         do {
-            std::cout << "Do you want full or partial search (f/p): ";
+            std::cout << "Do you want (f)ull-word, (p)artial or (t)hreaded search (f/p/t): ";
             std::cin >> option;
 
             std::cin.clear();
             std::cin.ignore(32767, '\n');
-        } while (option != 'f' && option != 'p');
+        } while (option != 'f' && option != 'p' && option != 't');
 
-
-        switch (option) {
-        case('f'): {
-            return true;
-            break;
-        }
-        case('p'): {
-            return false;
-            break;
-        }
-        default:
-            return false;
-        }
+        return option;
     }
 
     bool partialMatchCheck(std::string entry, std::string clue) {
@@ -63,16 +55,34 @@ namespace SearchLib
     }
 
     void searchResult(std::string name) {
-        if (checkForOptions()) {
-            if (searchResultFull(name))
+        switch (checkForOptions()) {
+        case('f'): {
+            if (searchResultFull(name)) {
                 std::cout << "Full match search entries complete.\n";
+            }
+            else
+                std::cout << "No entries found.\n";
+            break;
         }
-        else if (searchResultPartial(name)) {
-            std::cout << "Partial match search entries complete.\n";
+        case('p'): {
+            if (searchResultPartial(name)) {
+                std::cout << "Partial match search entries complete.\n";
+            }
+            else
+                std::cout << "No entries found.\n";
+            break;
         }
-        else 
-            std::cout << "No entries found.\n";
-        
+        case('t'): {
+            if (searchThreads(name)) {
+                std::cout << "Partial match search entries complete.\n";
+            }
+            else
+                std::cout << "No entries found.\n";
+            break;
+            }
+        default:
+            std::cout << "Got a faulty option.\n";
+        }
     }
 
     bool searchResultFull(std::string name) {
@@ -97,50 +107,45 @@ namespace SearchLib
         }
         return false;
     }
-}
 
-
-/*
-    auto lambda = [](std::string name, std::string path) {
-
-        for (const auto& entry : fs::directory_iterator(path, fs::directory_options::skip_permission_denied)) {
+    auto threadLambda = [](std::string name, std::string lambdaPath) {
+        for (const auto& entry : fs::directory_iterator(lambdaPath, fs::directory_options::skip_permission_denied)) {
+            if(!terminate) {
             std::string tempName = entry.path().stem().string();
+            std::cout << threads.size() << ' ' << std::this_thread::get_id() << ' ' << entry.path().string() << std::endl;
             if (entry.is_regular_file() && partialMatchCheck(tempName, name)) {
-                std::cout << "First entry is: " << entry.path() << std::endl;
+                std::cout << entry.path() << std::endl;
 
                 terminate = true;
-                //std::condition_variable::notify_all();
+                condVar.notify_all();
+                
                 return true;
             }
         }
+            return false;
+    }
         return false;
     };
 
-    void searchThreads(std::string name, std::string path) {
-        while (!terminate) {
-            threads.push_back(std::thread(lambda, name, path));
-            for (const auto& entry : fs::directory_iterator(path)) {
+    bool searchThreads(std::string name) {
+        for (const auto& entry : fs::directory_iterator(path, fs::directory_options::skip_permission_denied)) {
+            std::string tempName = entry.path().stem().string();
 
-                if (entry.is_directory()) {
-                    std::string tempFolder = entry.path().string();
-                    threadCount++;
-                    std::cout << threadCount << std::endl;
-                    threads.push_back(std::thread(lambda, name, tempFolder));
+            if (entry.is_regular_file() && partialMatchCheck(tempName, name)) {
+                std::cout << entry.path() << std::endl;
 
-
-                    std::cout << threadCount << std::endl;
-
-                }
+                terminate = true;
+                return true;
             }
-            if (threadCount >= 8) {
-                threads[8].sleep_for(100);
+            if (entry.is_directory() && threads.size() <= 8) {
+                threads.push_back(std::thread(threadLambda, name, entry.path().string()));
             }
-            for (int i = 0; i < 8; i++) {
-                threads[i].join();
-            }
-
-            return false;
         }
+
+        for (int i = 0; i < threads.size(); i++) {
+            threads[i].join();
+        }
+
+        return false;
     }
 }
-*/

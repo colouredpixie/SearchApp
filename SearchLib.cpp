@@ -74,7 +74,7 @@ namespace SearchLib
         }
         case('t'): {
             if (searchThreads(name)) {
-                std::cout << "Partial match search entries complete.\n";
+                std::cout << "Threaded partial match search entries complete.\n";
             }
             else
                 std::cout << "No entries found.\n";
@@ -112,7 +112,7 @@ namespace SearchLib
         for (const auto& entry : fs::directory_iterator(lambdaPath, fs::directory_options::skip_permission_denied)) {
             if(!terminate) {
             std::string tempName = entry.path().stem().string();
-            std::cout << threads.size() << ' ' << std::this_thread::get_id() << ' ' << entry.path().string() << std::endl;
+
             if (entry.is_regular_file() && partialMatchCheck(tempName, name)) {
                 std::cout << entry.path() << std::endl;
 

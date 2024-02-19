@@ -1,0 +1,7 @@
+﻿  
+  Microsoft (R) Program Maintenance Utility Version 14.36.32544.0
+  Copyright (C) Microsoft Corporation.  All rights reserved.
+  
+  	g++ -c main.cpp -o main.o
+  	g++ -o ./x64/Debug/SearchApp.exe main.o
+  	rm -rf .//main.o

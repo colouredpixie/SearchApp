@@ -1,25 +1,19 @@
 #
-# A simple makefile for compiling SearchApp
+# A makefile for building SearchApp
 #
 
-SRC=./
 TARGET=./x64/Debug
-CXX = g++
-#LIBS = -L. -lSearchLib -static
+LIBPATH = F:/programs/source/repos/GLTest24/SearchLib
+CC = g++
+LIBS = -L./x64/Debug -lSearchLib -static 
 
 all: default clean
 
-#default: SearchLib.lib SearchApp.out
-#    $(CXX) -o $(TARGET)/SearchApp.exe SearchApp.out $(LIBS)  
-
-#SearchLib.lib:
-#    ar rcs $(TARGET)/SearchLib.lib SearchLib.cpp 
-
-default: main.o
-	$(CXX) -o $(TARGET)/SearchApp.exe main.o
+default: main.o 
+	$(CC) -o $(TARGET)/SearchApp.exe main.o $(LIBS)  
 
 main.o:
-	$(CXX) -c main.cpp -o main.o 
+	$(CC) -c main.cpp -o main.o 
 
 clean:
-	rm -rf $(SRC)/main.o 
+	rm main.o 

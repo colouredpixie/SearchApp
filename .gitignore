@@ -32,3 +32,6 @@
 *.app
 /.vs/SearchApp
 /x64/Debug/SearchApp.Build.CppClean.log
+/SearchApp.vcxproj.filters
+/SearchApp.vcxproj.user
+/SearchApp.vcxproj

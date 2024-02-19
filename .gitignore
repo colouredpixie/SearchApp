@@ -31,3 +31,4 @@
 *.out
 *.app
 /.vs/SearchApp
+/x64/Debug/SearchApp.Build.CppClean.log

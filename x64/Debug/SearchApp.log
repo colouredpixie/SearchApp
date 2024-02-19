@@ -2,10 +2,11 @@
   Microsoft (R) Program Maintenance Utility Version 14.36.32544.0
   Copyright (C) Microsoft Corporation.  All rights reserved.
   
-  	ar -rcs ./x64/Debug/SearchLib.lib F:/programs/source/repos/GLTest24/SearchLib/SearchLib.cpp | ranlib ./x64/Debug/SearchLib.lib
-  	g++ -o ./x64/Debug/SearchApp.exe main.o -L./x64/Debug -lSearchLib -static
-  /usr/lib/gcc/x86_64-pc-cygwin/11/../../../../x86_64-pc-cygwin/bin/ld: ./x64/Debug/SearchLib.lib: error adding symbols: archive has no index; run ranlib to add one
+  	g++ -c -std=c++17 main.cpp -o main.o
+  	g++ -o ./x64/Debug/SearchApp.exe main.o -I./lib/SearchLib.cpp -L./x64/Debug/ -lSearchLib -static
+  /usr/lib/gcc/x86_64-pc-cygwin/11/../../../../x86_64-pc-cygwin/bin/ld: main.o:main.cpp:(.text+0x18): undefined reference to `SearchLib::getName()'
+  /usr/lib/gcc/x86_64-pc-cygwin/11/../../../../x86_64-pc-cygwin/bin/ld: main.o:main.cpp:(.text+0x34): undefined reference to `SearchLib::searchResult(std::string)'
 collect2 : error : ld returned 1 exit status
-NMAKE : fatal error U1077: 'g++ -o ./x64/Debug/SearchApp.exe main.o -L./x64/Debug -lSearchLib -static' : return code '0x1'
+NMAKE : fatal error U1077: 'g++ -o ./x64/Debug/SearchApp.exe main.o -I./lib/SearchLib.cpp -L./x64/Debug/ -lSearchLib -static' : return code '0x1'
   Stop.
 F:\programs\Visual Studio\MSBuild\Microsoft\VC\v170\Microsoft.MakeFile.Targets(45,5): error MSB3073: The command "nmake" exited with code 2.
